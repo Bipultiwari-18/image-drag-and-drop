@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Drag and Drop Image</title>
+  <style>
+    #drop-area {
+      width: 300px;
+      height: 200px;
+      border: 2px dashed #888;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+      color: #888;
+    }
+
+    img {
+      width: 150px;
+      cursor: grab;
+    }
+
+    .drag-over {
+      border-color: #00aaff;
+      background-color: #e0f7ff;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Drag the image below into the drop area:</h2>
+  <img src="https://example.com/my-image.jpg"  id="draggable-image" draggable="true" alt="Draggable Image">
+
+  <div id="drop-area">Drop image here</div>
+
+  <script>
+    const img = document.getElementById('draggable-image');
+    const dropArea = document.getElementById('drop-area');
+
+    // Handle drag start
+    img.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', e.target.id);
+    });
+
+    // Allow drop
+    dropArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropArea.classList.add('drag-over');
+    });
+
+    // Remove visual indication
+    dropArea.addEventListener('dragleave', () => {
+      dropArea.classList.remove('drag-over');
+    });
+
+    // Handle drop
+    dropArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropArea.classList.remove('drag-over');
+      const imageId = e.dataTransfer.getData('text/plain');
+      const image = document.getElementById(imageId);
+      dropArea.innerHTML = ''; // Clear existing content
+      dropArea.appendChild(image);
+    });
+  </script>
+
+</body>
+</html>
